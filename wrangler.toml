@@ -5,7 +5,7 @@ compatibility_date = "2024-09-23"
 # Create these first (see README.md), then paste the real KV id:
 [[kv_namespaces]]
 binding = "CONTENT"
-id = "PASTE_KV_NAMESPACE_ID_HERE"
+id = "efe6106976f5436aa649249c11a95aaa"
 
 [[r2_buckets]]
 binding = "MEDIA"
