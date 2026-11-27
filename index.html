@@ -259,3 +259,4 @@ $("#lp").onclick=function(){show(li-1)};$("#ln").onclick=function(){show(li+1)};
 var ts=$$("#tn a");if("IntersectionObserver"in window){var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting)ts.forEach(function(a){a.classList.toggle("on",a.getAttribute("href")==="#"+x.target.id)})})},{rootMargin:"-30% 0px -60% 0px"});ts.forEach(function(a){var s=document.querySelector(a.getAttribute("href"));s&&io.observe(s)})}
 })();
 </script></body></html>
+
