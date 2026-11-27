@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Admin | Sky Industrial Park</title>
+<style>
+:root{--p:#5b21d6;--pd:#220a5e;--bg:#f4f1ec;--line:#e2ddd3;--mu:#6b6b7b}*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1a24}
+button,input,select,textarea{font:inherit}.btn{background:var(--p);color:#fff;border:0;border-radius:8px;padding:9px 18px;font-weight:600;cursor:pointer}.btn:hover{background:var(--pd)}.btn.o{background:#fff;color:var(--p);border:1.5px solid var(--p)}.btn.s{padding:5px 12px;font-size:13px}.btn.r{background:#fff;color:#b3261e;border:1.5px solid #e6b8b4}
+#login{max-width:360px;margin:12vh auto;background:#fff;padding:28px;border-radius:14px;box-shadow:0 10px 40px rgba(34,10,94,.12)}#login h1{font-size:20px;margin:0 0 14px}#login input{width:100%;margin-bottom:12px}
+input[type=text],input[type=password],textarea,select{width:100%;padding:10px 12px;border:1px solid #cfc9bb;border-radius:8px;background:#fff}textarea{min-height:90px;resize:vertical}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(90deg,#3d12a6,#6a2ee0);color:#fff;display:flex;align-items:center;gap:14px;padding:12px 20px;flex-wrap:wrap}header b{font-size:17px}header .sp{flex:1}header a{color:#fff}#msg{font-size:14px}
+main{display:grid;grid-template-columns:210px 1fr;gap:20px;max-width:1100px;margin:20px auto;padding:0 14px}nav{display:flex;flex-direction:column;gap:6px;position:sticky;top:76px;align-self:start}nav button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}nav button.on{background:var(--p);color:#fff;border-color:var(--p)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}.card h2{margin:0 0 4px;font-size:18px}.hint{color:var(--mu);font-size:13px;margin:0 0 14px}
+.f{margin-bottom:14px}.f label{display:block;font-weight:600;font-size:13px;margin-bottom:4px}.row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.chk{display:flex;gap:8px;align-items:center}.chk input{width:auto}
+.media{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start}.pv{width:120px;height:80px;border-radius:8px;background:#eee center/cover;display:grid;place-items:center;font-size:12px;color:var(--mu);overflow:hidden}.pv video{width:100%;height:100%;object-fit:cover}.media .b{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center}.up{position:relative;overflow:hidden;display:inline-block}.up input{position:absolute;inset:0;opacity:0;cursor:pointer}
+@media(max-width:760px){main{grid-template-columns:1fr}nav{flex-direction:row;overflow-x:auto;position:static}nav button{white-space:nowrap}.media{grid-template-columns:90px 1fr}.pv{width:90px;height:64px}}
+</style></head><body>
+<div id="login"><h1>Admin login</h1><input id="pw" type="password" placeholder="Admin password" autocomplete="current-password"><button class="btn" id="go" style="width:100%">Login</button><p id="le" class="hint" style="margin:10px 0 0;color:#b3261e"></p></div>
+<div id="app" hidden><header><b>Sky Industrial Park &ndash; Admin</b><span class="sp"></span><span id="msg"></span><a href="/" target="_blank" rel="noopener">View site</a><button class="btn o" id="out">Logout</button><button class="btn" id="save" style="background:#12b27a">Save changes</button></header>
+<main><nav id="nav"></nav><section id="pn"></section></main></div>
+<script src="defaults.js"></script>
+<script>
+var SCH=[
+{k:"settings",t:"Contact & map",obj:1,h:"Shown in the footer, contact section and WhatsApp buttons.",f:[["company","Company name","text"],["whatsapp","WhatsApp number (digits with country code, e.g. 919XXXXXXXXX)","text"],["phone","Phone","text"],["email","Email","text"],["address","Address","area"],["mapQuery","Map location (address, or latitude,longitude)","text"],["siteTitle","Browser tab title","text"],["siteDesc","Search-engine description","area"],["logoText","Logo text","text"],["logoImage","Logo image (optional, shown before the text)","image"],["favicon","Favicon (small square image)","image"],["colorMain","Main colour","color"],["colorDark","Dark colour","color"],["waMsgPlot","WhatsApp message for a plot (use {plot} for the plot name)","area"],["waMsgGeneral","WhatsApp message (general)","area"]]},
+{k:"hero",t:"Hero banners",h:"Big banners at the top. Add or delete any banner (keep at least 1). Best image size about 1920 x 800.",f:[["small","Small heading","text"],["title","Headline","text"],["text","Text","area"],["btn","Button text","text"],["link","Button link (#picks, #overview, #amenities, #gallery, #location)","text"],["image","Banner image","image"]]},
+{k:"tabs",t:"Search tabs",h:"The tabs above the search box (Buy plot, Lease...). Add, rename, reorder or delete.",f:[["label","Tab name","text"]]},
+{k:"tiles",t:"Quick tiles",h:"Picture tiles under the search box. Add or delete any tile.",f:[["label","Label","text"],["link","Link","text"],["image","Image","image"]]},
+{k:"plots",t:"Plots",h:"Add every plot here. The first 3 appear in the big slider; all appear in the highlighted row and search list.",f:[["name","Plot number / name","text"],["type","Type","text"],["location","Location","text"],["area","Area (write units, e.g. 2 Acre / 100 Decimal)","text"],["price","Price (empty = Price on request)","text"],["status","Status (Available, Booked, Sold...)","text"],["image","Main photo","image"]]},
+{k:"services",t:"Service boxes",h:"Add, edit or delete boxes. For the link write whatsapp to open WhatsApp, or a section like #overview.",f:[["label","Small label","text"],["title","Title","text"],["text","Text","area"],["btn","Button text","text"],["link","Button link","text"],["image","Image","image"]]},
+{k:"overview",t:"Overview boxes",h:"The facts grid in Project overview.",f:[["label","Label","text"],["value","Value","text"]]},
+{k:"infra",t:"Infrastructure boxes",h:"Keep completed work and facilities separate.",f:[["title","Title","text"],["tag","Tag text","text"],["kind","Colour","sel",[["done","Completed work (green)"],["fac","Facility (purple)"]]],["icon","Icon","sel",[["check","Tick"],["fence","Boundary"],["road","Road"],["bolt","Electricity"],["drop","Water"]]]]},
+{k:"about",t:"About & main video",obj:1,h:"Text and MP4 video inside the About box (video max 95 MB). A YouTube link also works.",f:[["text","About text","area"],["video","Video (MP4 or YouTube link)","video"]]},
+{k:"videos",t:"Video gallery",h:"Add as many video slots as you want. Upload an MP4 (max 95 MB) or paste a YouTube link.",f:[["title","Video title","text"],["src","Video (MP4 or YouTube link)","video"]]},
+{k:"gallery",t:"Photo gallery",h:"Photos for the gallery section.",f:[["src","Photo","image"],["cat","Category","sel",[["site","Site"],["road","Roads"],["wall","Boundary"]]]]},
+{k:"menu",t:"Top menu",h:"Dropdown menus in the header. Items with the same 'Dropdown name' are grouped. Link: #picks, #overview, #amenities, #gallery, #location, or contact (opens form) / whatsapp.",f:[["group","Dropdown name","text"],["label","Link text","text"],["link","Link","text"]]},
+{k:"drawer",t:"Side menu (☰)",h:"Links in the slide-out menu opened by the ☰ button.",f:[["label","Link text","text"],["link","Link","text"]]},
+{k:"sectabs",t:"Section tabs",h:"The tab bar that sticks under the header.",f:[["label","Tab text","text"],["link","Link","text"]]},
+{k:"footerlinks",t:"Footer links",h:"Items with the same 'Column name' form one footer column.",f:[["group","Column name","text"],["label","Link text","text"],["link","Link","text"]]},
+{k:"chips",t:"Plot tags",h:"Green tags on plot cards and the side card (e.g. Mutation done).",f:[["label","Tag text","text"]]},
+{k:"show",t:"Show / hide sections",obj:1,h:"Untick to hide a whole section from the website.",f:[["tiles","Quick tiles","check"],["featured","Featured plots slider","check"],["highlighted","Highlighted plots row","check"],["services","Service boxes","check"],["about","About box","check"],["overview","Project overview","check"],["infra","Infrastructure","check"],["gallery","Photo gallery","check"],["location","Location map","check"],["banner","Bottom banner","check"]]},
+{k:"texts",t:"All headings & texts",obj:1,h:"Every heading, button name and hint on the website.",f:Object.keys(SKY_DEFAULTS.texts).map(function(k){return[k,SKY_TL[k]||k,k==="infN"?"area":"text"]})}];
+
+var K=sessionStorage.getItem("k")||"",D,cur="settings",$=function(s){return document.querySelector(s)};
+var E=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
+function api(p,o){o=o||{};o.headers=Object.assign({"x-admin-key":K},o.headers||{});return fetch(p,o)}
+function say(t,bad){var m=$("#msg");m.textContent=t;m.style.color=bad?"#ffb4ab":"#d6ffe9"}
+function get(p){return p.split(".").reduce(function(o,k){return o==null?o:o[k]},D)}
+function set(p,v){var a=p.split("."),l=a.pop(),o=a.reduce(function(o,k){return o[k]},D);o[l]=v}
+function nav(){$("#nav").innerHTML=SCH.map(function(s){return'<button class="'+(s.k===cur?"on":"")+'" data-k="'+s.k+'">'+s.t+"</button>"}).join("")}
+function field(f,path){var k=f[0],l=f[1],t=f[2],p=path+"."+k,v=get(p)==null?"":get(p),h='<div class="f">';
+if(t==="check")return h+'<label class="chk"><input type="checkbox" data-p="'+p+'"'+(v?" checked":"")+"> "+l+"</label></div>";
+h+="<label>"+l+"</label>";
+if(t==="area")h+='<textarea data-p="'+p+'">'+E(v)+"</textarea>";
+else if(t==="sel")h+='<select data-p="'+p+'">'+(f[3]||[]).map(function(o){return'<option value="'+o[0]+'"'+(v===o[0]?" selected":"")+">"+o[1]+"</option>"}).join("")+"</select>";
+else if(t==="color")h+='<input type="color" data-p="'+p+'" value="'+E(v||"#5b21d6")+'" style="width:80px;height:42px;padding:2px">';
+else if(t==="image"||t==="video"){var vid=t==="video";h+='<div class="media"><div class="pv" '+(!vid&&v?'style="background-image:url(\''+E(v)+'\')"':"")+">"+(vid&&v?'<video src="'+E(v)+'" muted></video>':(v?"":"No file"))+'</div><div><input type="text" data-p="'+p+'" placeholder="'+(vid?"/media/... or empty":"/media/... or img/photo.webp")+'" value="'+E(v)+'"><div class="b"><label class="btn s up">Upload '+(vid?"video":"photo")+'<input type="file" data-up="'+p+'" accept="'+(vid?"video/mp4,video/webm":"image/*")+'"></label><button class="btn s r" data-clr="'+p+'" type="button">Remove</button><span class="hint" style="margin:0" data-st="'+p+'"></span></div></div></div>'}
+else h+='<input type="text" data-p="'+p+'" value="'+E(v)+'">';
+return h+"</div>"}
+function panel(){var s=SCH.filter(function(x){return x.k===cur})[0],h='<div class="card"><h2>'+s.t+'</h2><p class="hint">'+s.h+"</p>";
+if(s.obj)h+=s.f.map(function(f){return field(f,s.k)}).join("");
+else{var A=D[s.k];A.forEach(function(it,i){h+='<div class="card" style="background:#faf8f4"><div class="row"><b>'+"#"+(i+1)+((it.name||it.title||it.label)?" &ndash; "+E(it.name||it.title||it.label):"")+"</b>"+(0?"":'<span><button class="btn s o" data-mv="'+i+':-1">&uarr;</button> <button class="btn s o" data-mv="'+i+':1">&darr;</button> <button class="btn s r" data-rm="'+i+'">Delete</button></span>')+"</div>"+s.f.map(function(f){return field(f,s.k+"."+i)}).join("")+"</div>"});
+h+='<button class="btn" id="add">+ Add new item</button>'}
+$("#pn").innerHTML=h+"</div>";nav()}
+function shrink(file){return new Promise(function(res){if(!/^image\/(jpeg|png|webp)$/.test(file.type))return res(file);
+createImageBitmap(file).then(function(b){var r=Math.min(1,1800/Math.max(b.width,b.height)),c=document.createElement("canvas");c.width=Math.round(b.width*r);c.height=Math.round(b.height*r);c.getContext("2d").drawImage(b,0,0,c.width,c.height);
+c.toBlob(function(bl){res(bl?new File([bl],file.name.replace(/\.[^.]+$/,"")+".webp",{type:"image/webp"}):file)},"image/webp",.85)}).catch(function(){res(file)})})}
+function upload(p,file){var st=document.querySelector('[data-st="'+p+'"]');st.textContent="Uploading...";
+if(file.size>95*1024*1024){st.textContent="File too large (max 95 MB)";return}
+shrink(file).then(function(f){return api("/api/upload?name="+encodeURIComponent(f.name),{method:"POST",headers:{"content-type":f.type},body:f})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||"failed");return j})})
+.then(function(j){set(p,j.url);var y=scrollY;panel();scrollTo(0,y);say("Uploaded. Press Save changes to publish.")}).catch(function(e){st.textContent="Upload failed: "+e.message})}
+document.addEventListener("input",function(e){var p=e.target.dataset&&e.target.dataset.p;if(p&&e.target.type!=="checkbox")set(p,e.target.value)});
+document.addEventListener("change",function(e){var t=e.target;if(t.dataset.p&&t.type==="checkbox")set(t.dataset.p,t.checked);if(t.dataset.p&&t.tagName==="SELECT")set(t.dataset.p,t.value);if(t.dataset.up&&t.files[0])upload(t.dataset.up,t.files[0])});
+document.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var s=SCH.filter(function(x){return x.k===cur})[0];
+if(b.dataset.k){cur=b.dataset.k;panel()}
+else if(b.dataset.clr){set(b.dataset.clr,"");panel()}
+else if(b.dataset.rm){if(confirm("Delete this item?")){D[cur].splice(+b.dataset.rm,1);panel()}}
+else if(b.dataset.mv){var m=b.dataset.mv.split(":"),i=+m[0],j=i+ +m[1],A=D[cur];if(j>=0&&j<A.length){var x=A[i];A[i]=A[j];A[j]=x;panel()}}
+else if(b.id==="add"){var n={};s.f.forEach(function(f){n[f[0]]=f[2]==="check"?false:""});if(cur==="plots"){n.type="Industrial plot";n.name="Plot "+(D.plots.length+1)}if(cur==="gallery")n.cat="site";if(D[cur].length&&"group"in D[cur][0])n.group=D[cur][D[cur].length-1].group;if(cur==="infra"){n.kind="done";n.icon="check"}D[cur].push(n);panel()}
+else if(b.id==="save"){say("Saving...");api("/api/content",{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify(D)}).then(function(r){if(r.status===401){say("Wrong or expired password. Login again.",1);return}if(!r.ok)throw 0;say("Saved. Open the website and refresh.")}).catch(function(){say("Save failed. Check your internet or backend setup.",1)})}
+else if(b.id==="out"){sessionStorage.removeItem("k");location.reload()}});
+function start(){fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}}).then(function(c){D=window.SKY_MERGE(c);$("#login").hidden=true;$("#app").hidden=false;panel()})}
+function login(){K=$("#pw").value;api("/api/auth",{method:"POST"}).then(function(r){if(!r.ok)throw 0;sessionStorage.setItem("k",K);start()}).catch(function(){$("#le").textContent="Wrong password, or the backend is not set up yet."})}
+$("#go").onclick=login;$("#pw").addEventListener("keydown",function(e){if(e.key==="Enter")login()});
+if(K)api("/api/auth",{method:"POST"}).then(function(r){if(r.ok)start()}).catch(function(){});
+</script></body></html>
