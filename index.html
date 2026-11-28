@@ -561,6 +561,32 @@ section:has(#svc) {
   #svc .card { flex: 0 0 82% !important; min-height: 260px !important; }
   #svc-next { display: none; }
 }
+
+/* Fix mobile horizontal shift and overflow */
+html, body {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+@media (max-width: 768px) {
+  #picks .pk {
+    overflow: hidden !important;
+  }
+  #picks .trk .big {
+    flex: 0 0 100% !important;
+  }
+  #picks .pa.prev {
+    left: 6px !important;
+  }
+  #picks .pa.next {
+    right: 6px !important;
+  }
+  .rail .pa.prev {
+    left: 4px !important;
+  }
+  .rail .pa.next {
+    right: 4px !important;
+  }
+}
 </style>
 
 <script>
