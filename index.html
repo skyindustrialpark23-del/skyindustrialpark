@@ -368,8 +368,13 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
   min-height: 460px !important;
   border-radius: 0 !important;
 }
+#picks .pa.prev {
+  left: -20px !important;
+  z-index: 10 !important;
+}
 #picks .pa.next {
-  right: calc(8% - 20px);
+  right: calc(8% - 20px) !important;
+  z-index: 10 !important;
 }
 
 /* ===== 2. Top Highlighted Plots (#rc2): 2 Large Tall Cards + Smooth Auto & Swipe Slider ===== */
@@ -408,7 +413,7 @@ section:has(#svc) {
 }
 #svc .card {
   display: flex !important;
-  flex: 0 0 calc((100% - 60px) / 3.6) !important; /* ৩.৫টি কার্ড দেখাবে + ডানদিকে ফেড ইফেক্ট */
+  flex: 0 0 calc((100% - 60px) / 3.6) !important;
   min-height: 275px !important;
   background: #ffffff !important;
   border: 0 !important;
@@ -422,13 +427,13 @@ section:has(#svc) {
   scroll-snap-align: start !important;
 }
 #svc .card small {
-  display: none !important; /* প্রথম ছবির মতো ক্লিন লুক রাখতে ছোট ট্যাগ লুকানো হলো */
+  display: none !important;
 }
 #svc .card h3 {
   font-size: 20px !important;
   font-weight: 700 !important;
   line-height: 1.25 !important;
-  color: var(--pd) !important; /* ওয়েবসাইটের আসল গাঢ় বেগুনি রঙ */
+  color: var(--pd) !important;
   max-width: 85% !important;
   margin-bottom: 8px !important;
   position: relative;
@@ -442,20 +447,18 @@ section:has(#svc) {
   position: relative;
   z-index: 2;
 }
-/* নিচে বাঁ-দিকের অর্ধবৃত্তাকার ছবির ফ্রেম */
 #svc .card .im {
   position: absolute !important;
   left: -18px !important;
   bottom: -24px !important;
   width: 68% !important;
   height: 155px !important;
-  border-radius: 0 140px 0 0 !important; /* বৃত্তাকার আর্চ শেপ */
+  border-radius: 0 140px 0 0 !important;
   border: 0 !important;
   margin: 0 !important;
   box-shadow: none !important;
   z-index: 1;
 }
-/* নিচে ডানদিকে গোল তীর চিহ্ন বাটন */
 #svc .card .btn {
   position: absolute !important;
   right: 18px !important;
@@ -464,7 +467,7 @@ section:has(#svc) {
   height: 44px !important;
   padding: 0 !important;
   border-radius: 50% !important;
-  background: var(--p) !important; /* ওয়েবসাইটের আসল বেগুনি রঙ */
+  background: var(--p) !important;
   border: 0 !important;
   color: transparent !important;
   font-size: 0 !important;
@@ -474,7 +477,7 @@ section:has(#svc) {
   z-index: 3;
 }
 #svc .card .btn::after {
-  content: "\2192"; /* ডানদিকের তীর চিহ্ন (→) */
+  content: "\2192";
   color: #ffffff !important;
   font-size: 20px !important;
   font-weight: 500 !important;
@@ -484,7 +487,6 @@ section:has(#svc) {
   background: var(--pd) !important;
   transform: scale(1.06) !important;
 }
-/* ডান প্রান্তের ভাসমান স্লাইডার তীর বাটন */
 #svc-next {
   position: absolute;
   right: 8px;
@@ -521,32 +523,34 @@ section:has(#svc) {
   #svc .card { flex: 0 0 82% !important; min-height: 260px !important; }
   #svc-next { display: none; }
 }
-  #svc { grid-template-columns: 1fr !important; }
-}
 </style>
 
 <script>
-/* Top Highlighted Plots (#rc2) Auto-Slide & Mouse Drag */
+/* 1. Top Highlighted Plots (#rc2) Smooth Auto-Slide & Mouse Drag */
 (function(){
   var rc = document.getElementById("rc2");
   if (!rc) return;
   var timer, isDown = false, startX, scrollLeft;
 
-  function startAuto() {
-    clearInterval(timer);
-    timer = setInterval(function() {
-      var card = rc.querySelector(".pt");
-      if (!card) return;
-      var step = card.offsetWidth + 24;
-      if (rc.scrollLeft + rc.clientWidth >= rc.scrollWidth - 10) {
-        rc.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        rc.scrollBy({ left: step, behavior: "smooth" });
-      }
-    }, 3500);
+  function slideNext() {
+    var card = rc.querySelector(".pt");
+    if (!card) return;
+    var step = card.offsetWidth + 24;
+    var maxScroll = rc.scrollWidth - rc.clientWidth;
+    rc.style.scrollSnapType = "none";
+    if (rc.scrollLeft >= maxScroll - 15) {
+      rc.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      rc.scrollBy({ left: step, behavior: "smooth" });
+    }
+    setTimeout(function() { rc.style.scrollSnapType = "x mandatory"; }, 650);
   }
 
-  /* Mouse drag to scroll */
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(slideNext, 3000);
+  }
+
   rc.addEventListener("mousedown", function(e) {
     isDown = true;
     startX = e.pageX - rc.offsetLeft;
@@ -565,12 +569,10 @@ section:has(#svc) {
   rc.addEventListener("mouseenter", function() { clearInterval(timer); });
   rc.addEventListener("touchstart", function() { clearInterval(timer); }, { passive: true });
   rc.addEventListener("touchend", startAuto, { passive: true });
-
   startAuto();
 })();
-</script>
- <script>
-/* Add right floating arrow button to What We Offer (#svc) */
+
+/* 2. Add right floating arrow button to What We Offer (#svc) */
 (function(){
   var svc = document.getElementById("svc");
   if (!svc || !svc.parentElement) return;
@@ -588,22 +590,8 @@ section:has(#svc) {
   };
   svc.parentElement.appendChild(btn);
 })();
-</script>
-</body></html>
-<style>
-/* Fix arrow button position so it does not cover "Area: 5 Acre" */
-#picks .pa.prev {
-  left: -20px !important;
-  z-index: 10 !important;
-}
-#picks .pa.next {
-  right: calc(8% - 20px) !important;
-  z-index: 10 !important;
-}
-</style>
 
-<script>
-/* Force Featured Plots (#picks) Left & Right Arrow Buttons to Work */
+/* 3. Force Featured Plots (#picks) Left & Right Arrow Buttons to Work */
 (function(){
   setTimeout(function(){
     var prevBtn = document.querySelector("#picks .pa.prev");
@@ -640,3 +628,4 @@ section:has(#svc) {
   }, 800);
 })();
 </script>
+</body></html>
