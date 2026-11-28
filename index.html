@@ -339,16 +339,30 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
 #picks .trk .big {
   flex: 0 0 92%;
   min-height: 460px;
-  grid-template-columns: 0.34fr 0.66fr !important;
+  grid-template-columns: 0.26fr 0.74fr !important;
   border-radius: 22px !important;
   border: 1.5px solid rgba(34, 10, 94, 0.28) !important;
   overflow: hidden !important;
   box-shadow: 0 18px 40px rgba(34, 10, 94, 0.10) !important;
 }
 #picks .trk .big .in {
-  padding: 36px 28px !important;
+  padding: 28px 20px !important;
   border-right: 1.5px solid rgba(34, 10, 94, 0.22) !important;
   justify-content: space-between !important;
+  min-width: 0;
+}
+#picks .trk .big .in h3 {
+  font-size: 19px;
+}
+#picks .trk .big .bt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#picks .trk .big .bt .btn {
+  padding: 9px 12px;
+  font-size: 13px;
+  flex: 1;
 }
 #picks .trk .big .im2 {
   min-height: 460px !important;
@@ -357,7 +371,6 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
 #picks .pa.next {
   right: calc(8% - 20px);
 }
-
 /* ===== 2. Top Highlighted Plots (#rc2): 2 Large Tall Portrait Cards Side-by-Side (Original Colors Kept) ===== */
 .rl .rc#rc2 {
   display: grid !important;
