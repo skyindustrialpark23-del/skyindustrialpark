@@ -324,4 +324,106 @@ var done=false;function go(c){if(done)return;done=true;try{var M=window.SKY_MERG
 var t=setTimeout(function(){go({})},2500);
 fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}}).then(function(c){clearTimeout(t);go(c)});
 })();
+ <style>
+/* ===== 1. Featured Plots (#picks): Two-Column Split Card Design (Original Colors Kept) ===== */
+#picks .pk {
+  border-radius: 22px;
+  overflow: visible;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+#picks .trk {
+  gap: 24px;
+}
+#picks .trk .big {
+  flex: 0 0 92%;
+  min-height: 460px;
+  grid-template-columns: 0.34fr 0.66fr !important;
+  border-radius: 22px !important;
+  border: 1.5px solid rgba(34, 10, 94, 0.28) !important;
+  overflow: hidden !important;
+  box-shadow: 0 18px 40px rgba(34, 10, 94, 0.10) !important;
+}
+#picks .trk .big .in {
+  padding: 36px 28px !important;
+  border-right: 1.5px solid rgba(34, 10, 94, 0.22) !important;
+  justify-content: space-between !important;
+}
+#picks .trk .big .im2 {
+  min-height: 460px !important;
+  border-radius: 0 !important;
+}
+#picks .pa.next {
+  right: calc(8% - 20px);
+}
+
+/* ===== 2. Top Highlighted Plots (#rc2): 2 Large Tall Portrait Cards Side-by-Side (Original Colors Kept) ===== */
+.rl .rc#rc2 {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 24px !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  overflow: visible !important;
+}
+.rl .rc#rc2 .pt:nth-child(n+3) {
+  display: none !important;
+}
+.rl .rc#rc2 .pt {
+  width: 100% !important;
+  min-height: 470px !important;
+  border-radius: 22px !important;
+  border: 1.5px solid rgba(34, 10, 94, 0.25) !important;
+  box-shadow: 0 16px 36px rgba(34, 10, 94, 0.12) !important;
+}
+.rl:has(#rc2) .pa {
+  display: none !important;
+}
+
+/* ===== 3. What We Offer (#svc): Outer Frame + Inner Rounded Box Design (Original Colors Kept) ===== */
+#svc {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 18px !important;
+}
+#svc .card:nth-child(n+5) {
+  display: none !important;
+}
+#svc .card {
+  border: 1.5px solid rgba(34, 10, 94, 0.25) !important;
+  border-top: 1.5px solid rgba(34, 10, 94, 0.25) !important;
+  border-radius: 22px !important;
+  padding: 16px !important;
+  min-height: 430px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  box-shadow: 0 12px 28px rgba(34, 10, 94, 0.08) !important;
+}
+#svc .card .im {
+  flex: 1 !important;
+  min-height: 230px !important;
+  border-radius: 16px !important;
+  border: 1.5px solid rgba(34, 10, 94, 0.22) !important;
+  margin: 12px 0 !important;
+}
+#svc .card .btn {
+  border-radius: 12px !important;
+  width: 100% !important;
+}
+
+/* ===== Mobile & Tablet Responsive ===== */
+@media (max-width: 960px) {
+  #picks .trk .big { grid-template-columns: 1fr !important; min-height: auto; }
+  #picks .trk .big .in { border-right: 0 !important; border-bottom: 1.5px solid rgba(34, 10, 94, 0.22) !important; }
+  #picks .trk .big .im2 { min-height: 260px !important; order: 0; }
+  #svc { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 768px) {
+  .rl .rc#rc2 { grid-template-columns: 1fr !important; }
+  .rl .rc#rc2 .pt { min-height: 340px !important; }
+}
+@media (max-width: 560px) {
+  #svc { grid-template-columns: 1fr !important; }
+}
+</style>
 </script></body></html>
