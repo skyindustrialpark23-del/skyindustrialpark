@@ -326,7 +326,7 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
 })();
 </script>
 <style>
-/* ===== 1. Featured Plots (#picks): Two-Column Split Card Design (Original Colors Kept) ===== */
+/* ===== 1. Featured Plots (#picks): Narrow Left Info Panel + Wide Photo ===== */
 #picks .pk {
   border-radius: 22px;
   overflow: visible;
@@ -371,30 +371,28 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
 #picks .pa.next {
   right: calc(8% - 20px);
 }
-/* ===== 2. Top Highlighted Plots (#rc2): 2 Large Tall Portrait Cards Side-by-Side (Original Colors Kept) ===== */
+
+/* ===== 2. Top Highlighted Plots (#rc2): 2 Large Tall Cards + Smooth Auto & Swipe Slider ===== */
 .rl .rc#rc2 {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
+  display: flex !important;
   gap: 24px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-behavior: smooth !important;
   -webkit-mask-image: none !important;
   mask-image: none !important;
-  overflow: visible !important;
-}
-.rl .rc#rc2 .pt:nth-child(n+3) {
-  display: none !important;
+  padding: 4px 2px 14px !important;
 }
 .rl .rc#rc2 .pt {
-  width: 100% !important;
+  flex: 0 0 calc((100% - 24px) / 2) !important;
   min-height: 470px !important;
   border-radius: 22px !important;
   border: 1.5px solid rgba(34, 10, 94, 0.25) !important;
   box-shadow: 0 16px 36px rgba(34, 10, 94, 0.12) !important;
-}
-.rl:has(#rc2) .pa {
-  display: none !important;
+  scroll-snap-align: start !important;
 }
 
-/* ===== 3. What We Offer (#svc): Outer Frame + Inner Rounded Box Design (Original Colors Kept) ===== */
+/* ===== 3. What We Offer (#svc): Outer Frame + Inner Rounded Box Design ===== */
 #svc {
   grid-template-columns: repeat(4, 1fr) !important;
   gap: 18px !important;
@@ -433,11 +431,55 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
   #svc { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 768px) {
-  .rl .rc#rc2 { grid-template-columns: 1fr !important; }
-  .rl .rc#rc2 .pt { min-height: 340px !important; }
+  .rl .rc#rc2 .pt { flex: 0 0 88% !important; min-height: 360px !important; }
 }
 @media (max-width: 560px) {
   #svc { grid-template-columns: 1fr !important; }
 }
 </style>
+
+<script>
+/* Top Highlighted Plots (#rc2) Auto-Slide & Mouse Drag */
+(function(){
+  var rc = document.getElementById("rc2");
+  if (!rc) return;
+  var timer, isDown = false, startX, scrollLeft;
+
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(function() {
+      var card = rc.querySelector(".pt");
+      if (!card) return;
+      var step = card.offsetWidth + 24;
+      if (rc.scrollLeft + rc.clientWidth >= rc.scrollWidth - 10) {
+        rc.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        rc.scrollBy({ left: step, behavior: "smooth" });
+      }
+    }, 3500);
+  }
+
+  /* Mouse drag to scroll */
+  rc.addEventListener("mousedown", function(e) {
+    isDown = true;
+    startX = e.pageX - rc.offsetLeft;
+    scrollLeft = rc.scrollLeft;
+    clearInterval(timer);
+  });
+  rc.addEventListener("mouseleave", function() { isDown = false; startAuto(); });
+  rc.addEventListener("mouseup", function() { isDown = false; startAuto(); });
+  rc.addEventListener("mousemove", function(e) {
+    if (!isDown) return;
+    e.preventDefault();
+    var x = e.pageX - rc.offsetLeft;
+    rc.scrollLeft = scrollLeft - (x - startX) * 1.5;
+  });
+
+  rc.addEventListener("mouseenter", function() { clearInterval(timer); });
+  rc.addEventListener("touchstart", function() { clearInterval(timer); }, { passive: true });
+  rc.addEventListener("touchend", startAuto, { passive: true });
+
+  startAuto();
+})();
+</script>
 </body></html>
