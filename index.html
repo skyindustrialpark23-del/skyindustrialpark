@@ -396,8 +396,7 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
   box-shadow: 0 16px 36px rgba(34, 10, 94, 0.12) !important;
   scroll-snap-align: start !important;
 }
-
-/* ===== 3. What We Offer (#svc): Clean White Cards, Quarter-Circle Image & Round Arrow Button ===== */
+/* ===== 3. What We Offer (#svc): Clean White Cards & Quarter-Circle Image (No Round Button) ===== */
 section:has(#svc) {
   position: relative;
 }
@@ -461,34 +460,6 @@ section:has(#svc) {
 }
 #svc .card .btn {
   position: absolute !important;
-  right: 18px !important;
-  bottom: 18px !important;
-  width: 44px !important;
-  height: 44px !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  background: var(--p) !important;
-  border: 0 !important;
-  color: transparent !important;
-  font-size: 0 !important;
-  display: grid !important;
-  place-items: center !important;
-  box-shadow: 0 6px 16px rgba(91, 33, 214, 0.28) !important;
-  z-index: 3;
-}
-#svc .card .btn::after {
-  content: "\2192";
-  color: #ffffff !important;
-  font-size: 20px !important;
-  font-weight: 500 !important;
-  line-height: 1 !important;
-}
-#svc .card .btn:hover {
-  background: var(--pd) !important;
-  transform: scale(1.06) !important;
-}
- #svc .card .btn {
-  position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
@@ -498,15 +469,6 @@ section:has(#svc) {
 }
 #svc .card .btn::after {
   display: none !important;
-}
-  color: #ffffff !important;
-  font-size: 20px !important;
-  font-weight: 500 !important;
-  line-height: 1 !important;
-}
-#svc .card .btn:hover {
-  background: var(--pd) !important;
-  transform: scale(1.06) !important;
 }
 #svc-next {
   position: absolute;
