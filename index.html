@@ -483,3 +483,53 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
 })();
 </script>
 </body></html>
+<style>
+/* Fix arrow button position so it does not cover "Area: 5 Acre" */
+#picks .pa.prev {
+  left: -20px !important;
+  z-index: 10 !important;
+}
+#picks .pa.next {
+  right: calc(8% - 20px) !important;
+  z-index: 10 !important;
+}
+</style>
+
+<script>
+/* Force Featured Plots (#picks) Left & Right Arrow Buttons to Work */
+(function(){
+  setTimeout(function(){
+    var prevBtn = document.querySelector("#picks .pa.prev");
+    var nextBtn = document.querySelector("#picks .pa.next");
+    var trk = document.getElementById("picks-car");
+    var thumbs = document.querySelectorAll("#picks .th");
+    if (!prevBtn || !nextBtn || !trk) return;
+
+    function getCurrentIndex() {
+      var slides = trk.querySelectorAll(".big");
+      for (var i = 0; i < slides.length; i++) {
+        if (slides[i].classList.contains("act")) return i;
+      }
+      return 0;
+    }
+
+    prevBtn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var slides = trk.querySelectorAll(".big");
+      if (!slides.length) return;
+      var nextIdx = (getCurrentIndex() - 1 + slides.length) % slides.length;
+      if (thumbs[nextIdx]) thumbs[nextIdx].click();
+    };
+
+    nextBtn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var slides = trk.querySelectorAll(".big");
+      if (!slides.length) return;
+      var nextIdx = (getCurrentIndex() + 1) % slides.length;
+      if (thumbs[nextIdx]) thumbs[nextIdx].click();
+    };
+  }, 800);
+})();
+</script>
