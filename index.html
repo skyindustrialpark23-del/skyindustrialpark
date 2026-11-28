@@ -392,35 +392,119 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
   scroll-snap-align: start !important;
 }
 
-/* ===== 3. What We Offer (#svc): Outer Frame + Inner Rounded Box Design ===== */
-#svc {
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 18px !important;
+/* ===== 3. What We Offer (#svc): Clean White Cards, Quarter-Circle Image & Round Arrow Button ===== */
+section:has(#svc) {
+  position: relative;
 }
-#svc .card:nth-child(n+5) {
-  display: none !important;
+#svc {
+  display: flex !important;
+  gap: 20px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-behavior: smooth !important;
+  padding: 10px 4px 20px !important;
+  -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent 100%) !important;
+  mask-image: linear-gradient(90deg, #000 92%, transparent 100%) !important;
 }
 #svc .card {
-  border: 1.5px solid rgba(34, 10, 94, 0.25) !important;
-  border-top: 1.5px solid rgba(34, 10, 94, 0.25) !important;
-  border-radius: 22px !important;
-  padding: 16px !important;
-  min-height: 430px !important;
   display: flex !important;
+  flex: 0 0 calc((100% - 60px) / 3.6) !important; /* ৩.৫টি কার্ড দেখাবে + ডানদিকে ফেড ইফেক্ট */
+  min-height: 275px !important;
+  background: #ffffff !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  padding: 24px 22px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 30px rgba(34, 10, 94, 0.07) !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
-  box-shadow: 0 12px 28px rgba(34, 10, 94, 0.08) !important;
+  justify-content: flex-start !important;
+  scroll-snap-align: start !important;
 }
+#svc .card small {
+  display: none !important; /* প্রথম ছবির মতো ক্লিন লুক রাখতে ছোট ট্যাগ লুকানো হলো */
+}
+#svc .card h3 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  color: var(--pd) !important; /* ওয়েবসাইটের আসল গাঢ় বেগুনি রঙ */
+  max-width: 85% !important;
+  margin-bottom: 8px !important;
+  position: relative;
+  z-index: 2;
+}
+#svc .card p.sub {
+  font-size: 13.5px !important;
+  color: var(--mu) !important;
+  line-height: 1.45 !important;
+  max-width: 82% !important;
+  position: relative;
+  z-index: 2;
+}
+/* নিচে বাঁ-দিকের অর্ধবৃত্তাকার ছবির ফ্রেম */
 #svc .card .im {
-  flex: 1 !important;
-  min-height: 230px !important;
-  border-radius: 16px !important;
-  border: 1.5px solid rgba(34, 10, 94, 0.22) !important;
-  margin: 12px 0 !important;
+  position: absolute !important;
+  left: -18px !important;
+  bottom: -24px !important;
+  width: 68% !important;
+  height: 155px !important;
+  border-radius: 0 140px 0 0 !important; /* বৃত্তাকার আর্চ শেপ */
+  border: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  z-index: 1;
 }
+/* নিচে ডানদিকে গোল তীর চিহ্ন বাটন */
 #svc .card .btn {
-  border-radius: 12px !important;
-  width: 100% !important;
+  position: absolute !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: var(--p) !important; /* ওয়েবসাইটের আসল বেগুনি রঙ */
+  border: 0 !important;
+  color: transparent !important;
+  font-size: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  box-shadow: 0 6px 16px rgba(91, 33, 214, 0.28) !important;
+  z-index: 3;
+}
+#svc .card .btn::after {
+  content: "\2192"; /* ডানদিকের তীর চিহ্ন (→) */
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+}
+#svc .card .btn:hover {
+  background: var(--pd) !important;
+  transform: scale(1.06) !important;
+}
+/* ডান প্রান্তের ভাসমান স্লাইডার তীর বাটন */
+#svc-next {
+  position: absolute;
+  right: 8px;
+  top: 58%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 20px rgba(34, 10, 94, 0.16);
+  font-size: 20px;
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  z-index: 10;
+}
+#svc-next:hover {
+  background: var(--p);
+  color: #ffffff;
 }
 
 /* ===== Mobile & Tablet Responsive ===== */
@@ -428,12 +512,15 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
   #picks .trk .big { grid-template-columns: 1fr !important; min-height: auto; }
   #picks .trk .big .in { border-right: 0 !important; border-bottom: 1.5px solid rgba(34, 10, 94, 0.22) !important; }
   #picks .trk .big .im2 { min-height: 260px !important; order: 0; }
-  #svc { grid-template-columns: repeat(2, 1fr) !important; }
+  #svc .card { flex: 0 0 calc((100% - 20px) / 2.2) !important; }
 }
 @media (max-width: 768px) {
   .rl .rc#rc2 .pt { flex: 0 0 88% !important; min-height: 360px !important; }
 }
 @media (max-width: 560px) {
+  #svc .card { flex: 0 0 82% !important; min-height: 260px !important; }
+  #svc-next { display: none; }
+}
   #svc { grid-template-columns: 1fr !important; }
 }
 </style>
@@ -480,6 +567,26 @@ fetch("/api/content",{cache:"no-store"}).then(function(r){return r.ok?r.json():{
   rc.addEventListener("touchend", startAuto, { passive: true });
 
   startAuto();
+})();
+</script>
+ <script>
+/* Add right floating arrow button to What We Offer (#svc) */
+(function(){
+  var svc = document.getElementById("svc");
+  if (!svc || !svc.parentElement) return;
+  var btn = document.createElement("button");
+  btn.id = "svc-next";
+  btn.type = "button";
+  btn.setAttribute("aria-label", "Next service");
+  btn.innerHTML = "&#8594;";
+  btn.onclick = function() {
+    if (svc.scrollLeft + svc.clientWidth >= svc.scrollWidth - 10) {
+      svc.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      svc.scrollBy({ left: 320, behavior: "smooth" });
+    }
+  };
+  svc.parentElement.appendChild(btn);
 })();
 </script>
 </body></html>
