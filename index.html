@@ -487,6 +487,27 @@ section:has(#svc) {
   background: var(--pd) !important;
   transform: scale(1.06) !important;
 }
+ #svc .card .btn {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0 !important;
+  z-index: 3 !important;
+  cursor: pointer !important;
+}
+#svc .card .btn::after {
+  display: none !important;
+}
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+}
+#svc .card .btn:hover {
+  background: var(--pd) !important;
+  transform: scale(1.06) !important;
+}
 #svc-next {
   position: absolute;
   right: 8px;
